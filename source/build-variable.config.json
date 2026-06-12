@@ -1,0 +1,25 @@
+{
+  "family_name": "Xanh Mono Variable",
+  "postscript_prefix": "XanhMonoVariable",
+  "input_regular_ttf": "source/input/fonts/ttf/XanhMono-Regular.ttf",
+  "input_italic_ttf": "source/input/fonts/ttf/XanhMono-Italic.ttf",
+  "output_root": "build",
+  "replace_font_dirs": true,
+  "weight_axis": {
+    "minimum": 400,
+    "default": 400,
+    "maximum": 700,
+    "bold_strength_units": 10,
+    "curve_strength_multiplier": 1.2,
+    "counter_strength_multiplier": 0.6
+  },
+  "italic_axis": {
+    "minimum": 0,
+    "default": 0,
+    "maximum": 1,
+    "substitution_threshold": 0.5
+  },
+  "sample_text": "The quick brown fox jumps over the lazy dog.",
+  "build_webfonts": true,
+  "build_specimen_pdf": true
+}

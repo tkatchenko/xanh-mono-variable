@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Xanh Mono Variable range test</title>
+</head>
+<body>
+  <main>
+    <h1>Xanh Mono Variable range test</h1>
+
+    <fieldset>
+      <legend>Controls</legend>
+
+      <p>
+        <label for="weight">Weight: <output id="weightValue">700</output></label><br>
+        <input id="weight" type="range" min="400" max="700" value="700" step="1">
+      </p>
+
+      <p>
+        <label for="italic">Italic: <output id="italicValue">0.00</output></label><br>
+        <input id="italic" type="range" min="0" max="1" value="0" step="0.01">
+      </p>
+
+      <p>
+        <label for="size">Size: <output id="sizeValue">56px</output></label><br>
+        <input id="size" type="range" min="18" max="96" value="56" step="1">
+      </p>
+
+      <p>
+        <label for="tracking">Tracking: <output id="trackingValue">0.0px</output></label><br>
+        <input id="tracking" type="range" min="-2" max="8" value="0" step="0.1">
+      </p>
+    </fieldset>
+
+    <p>
+      <label for="text">Text</label><br>
+      <textarea id="text" rows="5" cols="80">The quick brown fox jumps over the lazy dog.
+ocean queue adobe glyphs COQSG HMNW mnwx
+0123456789</textarea>
+    </p>
+
+    <pre id="specimen"></pre>
+    <pre id="meta"></pre>
+  </main>
+
+  <script>
+    const fontFaces = [
+      new FontFace(
+        "Xanh Mono Variable",
+        "url(fonts/webfonts/XanhMonoVariable.woff2) format('woff2-variations')",
+        { weight: "400 700", style: "normal" }
+      ),
+      new FontFace(
+        "Xanh Mono Variable",
+        "url(fonts/webfonts/XanhMonoVariable.woff2) format('woff2-variations')",
+        { weight: "400 700", style: "italic" }
+      )
+    ];
+
+    Promise.all(fontFaces.map((fontFace) => fontFace.load())).then((loadedFonts) => {
+      loadedFonts.forEach((loadedFont) => document.fonts.add(loadedFont));
+      update();
+    });
+
+    const controls = {
+      weight: document.getElementById("weight"),
+      italic: document.getElementById("italic"),
+      size: document.getElementById("size"),
+      tracking: document.getElementById("tracking"),
+      text: document.getElementById("text")
+    };
+
+    const outputs = {
+      weight: document.getElementById("weightValue"),
+      italic: document.getElementById("italicValue"),
+      size: document.getElementById("sizeValue"),
+      tracking: document.getElementById("trackingValue"),
+      specimen: document.getElementById("specimen"),
+      meta: document.getElementById("meta")
+    };
+
+    function update() {
+      const wght = Number(controls.weight.value);
+      const ital = Number(controls.italic.value);
+      const size = Number(controls.size.value);
+      const tracking = Number(controls.tracking.value);
+      const style = ital >= 0.5 ? "italic" : "normal";
+
+      outputs.weight.value = wght;
+      outputs.italic.value = ital.toFixed(2);
+      outputs.size.value = `${size}px`;
+      outputs.tracking.value = `${tracking.toFixed(1)}px`;
+
+      outputs.specimen.textContent = controls.text.value;
+      outputs.specimen.style.fontFamily = "\"Xanh Mono Variable\", monospace";
+      outputs.specimen.style.fontWeight = String(wght);
+      outputs.specimen.style.fontStyle = style;
+      outputs.specimen.style.fontSynthesis = "none";
+      outputs.specimen.style.fontSize = `${size}px`;
+      outputs.specimen.style.letterSpacing = `${tracking}px`;
+      outputs.specimen.style.fontVariationSettings = `"wght" ${wght}, "ital" ${ital}`;
+
+      outputs.meta.textContent =
+        `font-weight: ${wght}\n` +
+        `font-style: ${style}\n` +
+        "font-synthesis: none\n" +
+        `font-variation-settings: "wght" ${wght}, "ital" ${ital.toFixed(2)}`;
+    }
+
+    Object.values(controls).forEach((control) => {
+      control.addEventListener("input", update);
+    });
+
+    update();
+  </script>
+</body>
+</html>
